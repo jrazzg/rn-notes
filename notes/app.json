@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "rn-notesndefinedndefinedndefinedndefinedndefinedndefinedndefinedndefinedron-notes",
-    "slug": "rn-notesndefinedndefinedndefinedndefinedndefinedndefinedndefinedndefinedron-notes",
+    "name": "rn-notes",
+    "slug": "rn-notes",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "rnnotesndefinedndefinedndefinedndefinedndefinedndefinedndefinedndefinedronnotes",
+    "scheme": "rnotes",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
