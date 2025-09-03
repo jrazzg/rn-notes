@@ -4,6 +4,22 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 const AddTaskScreen = () => {
     const [task, setTask] = useState<string>('')
+    const [taskList, setTaskList] = useState<string[]>([])
+
+    const handleSubmit = () => {
+        if (task.length > 0){
+            setTaskList([...taskList, task])
+            setTask('')
+            console.log(taskList)
+        }
+        else{
+            console.log('input is empty')
+        }
+    }
+    const handleReset = () => {
+        setTaskList([])
+        setTask('')
+    }
 
     return (
         <SafeAreaProvider>
@@ -15,7 +31,8 @@ const AddTaskScreen = () => {
                     placeholder="Insert note"
                     returnKeyType="done"
                 />
-                <TouchableOpacity style={styles.addButton}>
+                <Text>{taskList.join('\n')}</Text>
+                <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
                     <Text style={styles.buttonText}>Submit</Text>
                 </TouchableOpacity>
             </SafeAreaView>
