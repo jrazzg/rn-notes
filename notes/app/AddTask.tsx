@@ -1,29 +1,20 @@
-import { useState } from "react";
+import { NotesContext } from '@/context/NotesContext';
+import { useContext, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 const AddTaskScreen = () => {
     const [task, setTask] = useState<string>('')
-    const [taskList, setTaskList] = useState<string[]>([])
-
-    const handleSubmit = () => {
-        if (task.length > 0){
-            setTaskList([...taskList, task])
-            setTask('')
-            console.log(taskList)
-        }
-        else{
-            console.log('input is empty')
-        }
-    }
-    const handleReset = () => {
-        setTaskList([])
-        setTask('')
-    }
+    const notesContext = useContext(NotesContext)
+    
+    if (!notesContext) throw new Error("Context not available")
+    
+    const {notesList, addNote} = notesContext
 
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container}>
+                <Text>{notesList}</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={setTask}
@@ -31,8 +22,7 @@ const AddTaskScreen = () => {
                     placeholder="Insert note"
                     returnKeyType="done"
                 />
-                <Text>{taskList.join('\n')}</Text>
-                <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
+                <TouchableOpacity style={styles.addButton} onPress={() => addNote(task)}>
                     <Text style={styles.buttonText}>Submit</Text>
                 </TouchableOpacity>
             </SafeAreaView>
