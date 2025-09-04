@@ -1,12 +1,15 @@
 import { NotesContext } from '@/context/NotesContext';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useContext, useState } from "react";
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 
 const ViewTaskScreen = () => {
     const router = useRouter();
-    const [task, setTask] = useState<string>('')
     const notesContext = useContext(NotesContext)
+    const { note } = useLocalSearchParams<{ note: string }>();
+    const [task, setTask] = useState<string>(note)
+    const [isChanged, setIsChanged] = useState<boolean>(false)
+
 
     if (!notesContext) throw new Error("Context not available")
 
@@ -19,6 +22,11 @@ const ViewTaskScreen = () => {
         }
     }
 
+    const handleTextChanged = () => {
+        setTask
+        setIsChanged(true)
+    }
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -26,17 +34,17 @@ const ViewTaskScreen = () => {
 
             <TextInput
                 style={styles.input}
-                onChangeText={setTask}
+                onChangeText={handleTextChanged}
                 value={task}
                 placeholder="Insert note"
                 returnKeyType="done"
             />
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity><Text style={[styles.buttonText, {color: 'red', marginBottom: 20,}]}>Delete Note</Text></TouchableOpacity>
-                <TouchableOpacity style={styles.addButton} onPress={handleUpdate}>
+            <TouchableOpacity style={styles.deleteButton}><Text style={[styles.buttonText, { color: 'red', marginBottom: 20, }]}>Delete Note</Text></TouchableOpacity>
+            {
+                isChanged && (<TouchableOpacity style={[styles.addButton]} onPress={handleUpdate}>
                     <Text style={styles.buttonText}>Update</Text>
-                </TouchableOpacity>
-            </View>
+                </TouchableOpacity>)
+            }
         </KeyboardAvoidingView>
     )
 };
@@ -49,15 +57,18 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
     },
-    buttonContainer: {
+    deleteButton: {
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
     },
     input: {
-        flex: 1,
-        textAlignVertical: 'top',
+        // flex: 1,
+        // textAlignVertical: 'top',
         marginBottom: 20,
-        padding: 20,
+        // padding: 20,
         // backgroundColor: '#f0f0f0ff',
-        borderRadius: 10,
+        // borderRadius: 10,
     },
     addButton: {
         backgroundColor: '#004dc0ff',

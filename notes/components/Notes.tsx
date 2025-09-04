@@ -9,7 +9,7 @@ const Note = ({ note }: NoteProps) => {
     const router = useRouter()
     
     return (
-        <TouchableOpacity style={styles.container} onPress={() => router.navigate('/ViewTask')}>
+        <TouchableOpacity style={styles.container} onPress={() => router.push({pathname: '/ViewTask', params: {note}})}>
             <Text style={styles.noteText}>{note}</Text>
         </TouchableOpacity>
     );
