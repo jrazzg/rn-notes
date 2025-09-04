@@ -1,32 +1,40 @@
 import { NotesContext } from '@/context/NotesContext';
+import { useRouter } from 'expo-router';
 import { useContext, useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 
 const AddTaskScreen = () => {
+    const router = useRouter();
     const [task, setTask] = useState<string>('')
     const notesContext = useContext(NotesContext)
-    
+
     if (!notesContext) throw new Error("Context not available")
-    
-    const {notesList, addNote} = notesContext
+
+    const { addNote } = notesContext
+
+    const handleSubmit = () => {
+        if (task.length > 0){
+            addNote(task)
+            router.back()
+        }
+    }
 
     return (
-        <SafeAreaProvider>
-            <SafeAreaView style={styles.container}>
-                <Text>{notesList}</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setTask}
-                    value={task}
-                    placeholder="Insert note"
-                    returnKeyType="done"
-                />
-                <TouchableOpacity style={styles.addButton} onPress={() => addNote(task)}>
-                    <Text style={styles.buttonText}>Submit</Text>
-                </TouchableOpacity>
-            </SafeAreaView>
-        </SafeAreaProvider>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.container}>
+
+            <TextInput
+                style={styles.input}
+                onChangeText={setTask}
+                value={task}
+                placeholder="Insert note"
+                returnKeyType="done"
+            />
+            <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
+                <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+        </KeyboardAvoidingView>
     )
 };
 
@@ -52,6 +60,7 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
+        marginBottom: 100,
     },
     buttonText: {
         color: '#fff',
