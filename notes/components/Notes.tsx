@@ -1,15 +1,18 @@
+import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 type NoteProps = {
-  note: string;
+    note: string;
 };
 
 const Note = ({ note }: NoteProps) => {
-  return (
-    <TouchableOpacity style={styles.container}>
-      <Text>{note}</Text>
-    </TouchableOpacity>
-  );
+    const router = useRouter()
+    
+    return (
+        <TouchableOpacity style={styles.container} onPress={() => router.navigate('/ViewTask')}>
+            <Text style={styles.noteText}>{note}</Text>
+        </TouchableOpacity>
+    );
 };
 
 export default Note;
@@ -20,5 +23,14 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 10,
         marginBottom: 10,
+        flexDirection: 'row',
+    },
+    noteText: {
+        flex: 1,
+        paddingRight: 20,
+    },
+    editText: {
+        color: '#646464ff',
+        fontWeight: '700',
     },
 })
