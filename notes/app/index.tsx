@@ -1,3 +1,4 @@
+import Note from "@/components/Notes";
 import { NotesContext } from "@/context/NotesContext";
 import { useRouter, } from "expo-router";
 import { useContext } from "react";
@@ -8,14 +9,13 @@ export default function Index() {
     const notesContext = useContext(NotesContext);
 
     if (!notesContext) throw new Error("Context not available")
-    const {notesList} = notesContext
+    const { notesList } = notesContext
 
     return (
         <View style={styles.container}>
-            <Pressable style={styles.tasks}>
-                <Text>{notesList}</Text>
-            </Pressable>
-
+            {
+                notesList.map((note) => <Note note={note} />)
+            }
             <Pressable style={styles.addButton} onPress={() => router.navigate('/AddTask')}>
                 <Text style={styles.addButtonText}>+</Text>
             </Pressable>
@@ -44,10 +44,5 @@ const styles = StyleSheet.create({
     addButtonText: {
         color: '#fff',
         fontSize: 23,
-    },
-    tasks: {
-        width: 'auto',
-        padding: 20,
-        backgroundColor: '#ffdedeff'
     },
 });
