@@ -2,14 +2,15 @@ import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 type NoteProps = {
+    id: number;
     note: string;
 };
 
-const Note = ({ note }: NoteProps) => {
+const Note = ({ id, note }: NoteProps) => {
     const router = useRouter()
     
     return (
-        <TouchableOpacity style={styles.container} onPress={() => router.push({pathname: '/ViewTask', params: {note}})}>
+        <TouchableOpacity style={styles.container} onPress={() => router.push({pathname: '/ViewTask', params: {id, note}})}>
             <Text style={styles.noteText}>{note}</Text>
         </TouchableOpacity>
     );

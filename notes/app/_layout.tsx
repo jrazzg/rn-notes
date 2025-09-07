@@ -7,9 +7,11 @@ export default function RootLayout() {
     const addNote = (note: string) => setNotesList((prev) => [...prev, note]);
     const removeNote = (index: number) =>
         setNotesList((prev) => prev.filter((_, i) => i !== index));
+    const updateNote = (index: number, newNote: string) =>
+        setNotesList((prev) => prev.map((oldNote, i) => (i === index ? newNote : oldNote)));
 
     return (
-        <NotesContext.Provider value={{ notesList, addNote, removeNote }}>
+        <NotesContext.Provider value={{ notesList, addNote, removeNote, updateNote }}>
             <Stack>
                 <Stack.Screen name="index" options={{ title: 'Home' }} />
                 <Stack.Screen name="AddTask" options={{ title: 'Add Task' }} />

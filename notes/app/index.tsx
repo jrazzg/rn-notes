@@ -14,7 +14,7 @@ export default function Index() {
     return (
         <View style={styles.container}>
             {
-                notesList.map((note, index) => <Note key={index} note={note} />)
+                notesList.map((note, index) => <Note key={index} note={note} id={index} />)
             }
             <Pressable style={styles.addButton} onPress={() => router.navigate('/AddTask')}>
                 <Text style={styles.addButtonText}>+</Text>

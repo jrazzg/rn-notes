@@ -6,24 +6,29 @@ import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableO
 const ViewTaskScreen = () => {
     const router = useRouter();
     const notesContext = useContext(NotesContext)
-    const { note } = useLocalSearchParams<{ note: string }>();
+    const { id, note } = useLocalSearchParams<{ id: string, note: string }>();
     const [task, setTask] = useState<string>(note)
     const [isChanged, setIsChanged] = useState<boolean>(false)
 
 
     if (!notesContext) throw new Error("Context not available")
 
-    const { addNote } = notesContext
+    const { updateNote, removeNote } = notesContext
 
     const handleUpdate = () => {
         if (task.length > 0) {
-            addNote(task)
+            updateNote(Number(id), task)
             router.back()
         }
     }
 
-    const handleTextChanged = () => {
-        setTask
+    const handleDelete = () => {
+        removeNote(Number(id))
+        router.back()
+    }
+
+    const handleTextChanged = (text: string) => {
+        setTask(text)
         setIsChanged(true)
     }
 
@@ -39,7 +44,7 @@ const ViewTaskScreen = () => {
                 placeholder="Insert note"
                 returnKeyType="done"
             />
-            <TouchableOpacity style={styles.deleteButton}><Text style={[styles.buttonText, { color: 'red', marginBottom: 20, }]}>Delete Note</Text></TouchableOpacity>
+            <TouchableOpacity onPress={handleDelete} style={styles.deleteButton}><Text style={[styles.buttonText, { color: 'red', marginBottom: 20, }]}>Delete Note</Text></TouchableOpacity>
             {
                 isChanged && (<TouchableOpacity style={[styles.addButton]} onPress={handleUpdate}>
                     <Text style={styles.buttonText}>Update</Text>
