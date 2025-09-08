@@ -1,7 +1,7 @@
 import Note from "@/components/Notes";
 import { NotesContext } from "@/context/NotesContext";
 import { useRouter, } from "expo-router";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
@@ -9,7 +9,11 @@ export default function Index() {
     const notesContext = useContext(NotesContext);
 
     if (!notesContext) throw new Error("Context not available")
-    const { notesList } = notesContext
+    const { notesList, loadNotes } = notesContext
+
+    useEffect(() => {
+        loadNotes();
+    }, [])
 
     return (
         <View style={styles.container}>
