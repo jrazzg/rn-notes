@@ -61,7 +61,7 @@ const NotesProvider = ({ children }: NotesProviderProps) => {
     const loadNotes = async () => {
         try {
             const jsonValue = await AsyncStorage.getItem('notes_list');
-            return jsonValue != null ? setNotesList(JSON.parse(jsonValue)) : null;
+            jsonValue != null ? setNotesList(JSON.parse(jsonValue)) : null;
         } catch (e) {
             console.log(e);
         }
