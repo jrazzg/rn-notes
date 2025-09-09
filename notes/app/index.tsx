@@ -1,15 +1,20 @@
 import Note from "@/components/Notes";
 import { NotesContext } from "@/context/NotesContext";
 import { useRouter, } from "expo-router";
-import { useContext, useEffect } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function Index() {
     const router = useRouter();
     const notesContext = useContext(NotesContext);
 
-    if (!notesContext) throw new Error("Context not available")
-    const { notesList, loadNotes } = notesContext
+    if (!notesContext) throw new Error("Context not available");
+    const { notesList, loadNotes } = notesContext;
+
+    const [searchQuery, setSearchQuery] = useState<string>('');
+    const filteredNotes = notesList.filter(note =>
+        note.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     useEffect(() => {
         loadNotes();
@@ -17,8 +22,14 @@ export default function Index() {
 
     return (
         <View style={styles.container}>
+            <TextInput
+                style={styles.input}
+                placeholder='Search'
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+            />
             {
-                notesList.map((note, index) => <Note key={index} note={note} id={index} />)
+                filteredNotes.map((note, index) => <Note key={index} note={note} id={index} />)
             }
             <Pressable style={styles.addButton} onPress={() => router.navigate('/AddTask')}>
                 <Text style={styles.addButtonText}>+</Text>
@@ -48,5 +59,11 @@ const styles = StyleSheet.create({
     addButtonText: {
         color: '#fff',
         fontSize: 23,
+    },
+    input: {
+        backgroundColor: '#ecececff',
+        paddingHorizontal: 10,
+        borderRadius: 5,
+        marginBottom: 25,
     },
 });
